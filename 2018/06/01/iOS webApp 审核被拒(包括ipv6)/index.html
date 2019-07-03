@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Jarvis.卢的个人博客"><meta name="keywords" content="blog, 技术博客, IT"><title>iOS webApp 审核被拒(包括ipv6) | 望月@Jarvis</title><link rel="stylesheet" type="text/css" href="//fonts.loli.net/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.3"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.3"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">iOS webApp 审核被拒(包括ipv6)</h1><a id="logo" href="/.">望月@Jarvis</a><p class="description">在时光的流逝中我把将近而立之年之前的时间都荒废了，接下来我要把荒废时间的赚回来！</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">iOS webApp 审核被拒(包括ipv6)</h1><div class="post-meta"><a href="/2018/06/01/iOS webApp 审核被拒(包括ipv6)/#comments" class="comment-count"></a><p><span class="date">Jun 01, 2018</span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><p>苹果的审核总是充满了随机性，之前用的好好的一个功能就会忽然告诉你不符合他们的标准了。这次提交审核中共被拒绝了10次了；</p>
+<p>让我总结出一些东西：</p>
+<blockquote>
+<p>心态很重要，解决问题的技巧也很重要，不管被拒绝了多少次，都要坚持下去；</p>
+</blockquote>
+<h1 id="不要在意写的好不好，希望能够帮到有需要的人-🙂"><a href="#不要在意写的好不好，希望能够帮到有需要的人-🙂" class="headerlink" title="不要在意写的好不好，希望能够帮到有需要的人 🙂"></a>不要在意写的好不好，希望能够帮到有需要的人 🙂</h1><p>2018/5/20<br>第一次是因为在获取用户的相机权限的时候没有说明在哪些服务使用到该权限<br>![0520被拒.png]<a href="http://ww2.sinaimg.cn/large/006tNc79gy1g4muw91gdwj30ji0flq4m.jpg" target="_blank" rel="noopener">http://ww2.sinaimg.cn/large/006tNc79gy1g4muw91gdwj30ji0flq4m.jpg</a>)</p>
+<blockquote>
+<p>We noticed that your app requests the user’s consent to access their camera but does not clarify the use of this feature in the permission modal alert.<br>Please see attached screenshots for details.</p>
+</blockquote>
+<p>翻译：</p>
+<blockquote>
+<p>我们注意到您的应用请求用户同意访问其相机，但未在权限模式警报中说明使用此功能。<br>详情请参阅附件截图。</p>
+</blockquote>
+<blockquote>
+<p>To resolve this issue, please revise the permission modal alert to specify why the app is requesting access to the user’s camera.</p>
+</blockquote>
+<p>翻译：</p>
+<blockquote>
+<p>要解决此问题，请修改权限模式警报以指定应用程序请求访问用户相机的原因。</p>
+</blockquote>
+<blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/006tNc79gy1g4muwi7xwrj30u01400uj.jpg" alt="WechatIMG197.png"></p>
+</blockquote>
+<p>  然后我就在项目的info.plist文件上进行了修改，然后重新提交安装包提交审核</p>
+<blockquote>
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4muwprdvwj30j8011mx7.jpg" alt="Snip20180525_140.png"></p>
+</blockquote>
+<p>2018/05/22<br>第二次被拒是因为在IPv6的网络下应用启动后停留在启动页，这个问题比较冤枉，我这边测试好多遍都没有出现这种情况</p>
+<blockquote>
+<p> We discovered one or more bugs in your app when reviewed on iPhone running iOS 11.3.1 on Wi-Fi connected to an IPv6 network.<br>Specifically, an your app stays at the splash screen after launch.<br>Please see attached screenshots for details.</p>
+</blockquote>
+<p>翻译：</p>
+<blockquote>
+<p>在连接到IPv6网络的Wi-Fi上运行iOS 11.3.1的iPhone上进行审核时，我们发现您的应用中存在一个或多个错误。<br>具体来说，您的应用程序在启动后停留在启动屏幕上。<br>详情请参阅附件截图。</p>
+</blockquote>
+<blockquote>
+<p>Next Steps<br>.<br>To resolve this issue, please run your app on a device to identify any issues, then revise and resubmit your app for review.<br>.<br>If we misunderstood the intended behavior of your app, please reply to this message in Resolution Center to provide information on how these features were intended to work.<br>.<br>For new apps, uninstall all previous versions of your app from a device, then install and follow the steps to reproduce the issue. For updates, install the new version as an update to the previous version, then follow the steps to reproduce the issue.</p>
+</blockquote>
+<p>翻译：</p>
+<blockquote>
+<p>要解决此问题，请在设备上运行您的应用以识别任何问题，然后修改并重新提交您的应用进行审核。<br>.<br>如果我们误解了您的应用的预期行为，请在解决中心回复此消息，以提供有关这些功能的工作原理的信息。<br>.<br>对于新应用，请从设备上卸载应用的所有先前版本，然后安装并按照步骤重现问题。 对于更新，安装新版本作为以前版本的更新，然后按照步骤重现此问题。</p>
+</blockquote>
+<p>这是一个蛋疼的问题，我直接在Resolution Center 回复了，然后重新 <strong><code>提交审核</code></strong></p>
+<blockquote>
+<p>2018年5月22日 上午9:57<br>发件人 <a href="mailto:xxxxxxx@xx.com" target="_blank" rel="noopener">xxxxxxx@xx.com</a><br>你好，我们这边着重测了，并没有发现你们所说的停在启动页进不去的情况；应用第一次启动的时间是稍微有点长，我想这不应该是被拒的理由；<br>我这边重新提交一个安装包，麻烦你们尽快审核一下。</p>
+</blockquote>
+<p>然而等到第二天的时候又被拒了 </p>
+<p>2018/05/23<br>这是第三次被拒，原因和上一次不一样，是因为应用使用“prefs：root =”非公开URL方案，之前一直用着都没有被拒，以为不是很重要所以就没改</p>
+<blockquote>
+<p>Your app uses the “prefs:root=” non-public URL scheme, which is a private entity. The use of non-public APIs is not permitted on the App Store because it can lead to a poor user experience should these APIs change.<br>.<br>Continuing to use or conceal non-public APIs in future submissions of this app may result in the termination of your Apple Developer account, as well as removal of all associated apps from the App Store.<br>.<br><strong>Next Steps</strong><br>.<br>To resolve this issue, please revise your app to provide the associated functionality using public APIs or remove the functionality using the “prefs:root” or “App-Prefs:root” URL scheme.<br>.<br>If there are no alternatives for providing the functionality your app requires, you can file an <a href="https://developer.apple.com/bugreporter/" target="_blank" rel="noopener">enhancement request</a>.</p>
+</blockquote>
+<p>翻译：</p>
+<blockquote>
+<p>您的应用使用“prefs：root =”非公开URL方案，这是一个私有实体。 App Store上不允许使用非公共API，因为如果这些API发生变化，它可能导致糟糕的用户体验。<br>.<br>在将来提交此应用程序时继续使用或隐藏非公开API可能会导致您的Apple开发者帐户终止，并从App Store中删除所有关联的应用程序。<br>.<br>下一步<br>.<br>要解决此问题，请修改您的应用以使用公共API提供相关功能，或使用“prefs：root”或“App-Prefs：root”URL方案删除功能。<br>.<br>如果没有其他方法可以提供您的应用所需的功能，则可以提交增强请求。</p>
+</blockquote>
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>把项目里所有用到“prefs：root”或“App-Prefs：root”的地方都注释了，使用弹框提醒的方式，不做跳转，重新上传了一个安装包提交审核</p>
+<p>然而第二天还是被拒了</p>
+<h1 id="2018-05-24"><a href="#2018-05-24" class="headerlink" title="2018/05/24"></a>2018/05/24</h1><p>这是第四次被拒，这次的原因和第二次一样，说明第三次的问题解决了。我很确定第二次和这一次的问题是不存在的，所以我还是只在Resolution Center回复问题，然后重新 <strong><code>提交审核</code></strong></p>
+<blockquote>
+<p>2018年5月24日 上午7:36<br>发件人 <a href="mailto:xxxxxxx@xx.com" target="_blank" rel="noopener">xxxxxxx@xx.com</a><br>你好，我这边测过确实是可以进入应用的，只是第一次安装打开的时间稍长一些，是否可以再重新审核一次，麻烦了</p>
+</blockquote>
+<p>但是过了一天后还是被拒了，我得庆幸现在的审核周期加快了，如果像前几年那样肯定是要疯了；<br>在网上找了很久有看到类似的问题，解决方法是上传一个苹果审核认为有问题的界面操作视频，</p>
+<p>也就是被拒时苹果提出来的：</p>
+<blockquote>
+<p>If we misunderstood the intended behavior of your app, please reply to this message in Resolution Center to provide information on how these features were intended to work.</p>
+</blockquote>
+<p>翻译：</p>
+<blockquote>
+<p>如果我们误解了您的应用的预期行为，请在解决中心回复此消息，以提供有关这些功能的工作原理的信息。</p>
+</blockquote>
+<p>我就尝试着用手机的录屏功能，手机连接自己搭建的IPv6网络，录制了一个从安装到启动应用再到进入APP首页，这个步骤很流畅并不存在说启动之后停留在启动页的情况，然后重新 <strong><code>提交审核</code></strong>；理想很饱满，现实很骨感，后面还是反复被拒了6次，被拒了6次…，被拒了6次，而且每一次都没修改什么，解决方案中心的回复那里伸冤然后<strong><code>提交审核</code></strong>；<br>终于iOS审核团队给我发了一封邮件：</p>
+<blockquote>
+<p>Thank you for contacting App Store Review about your app, “appName” We understand you are requesting additional information regarding the rejection of your app’s review.<br>We have added your question to the app record for your app.<br>In the future, you can post your questions directly to your app record using the Reply feature in the Resolution Center. This option is available when your app is in a Rejected or Metadata Rejected state. When you communicate in the Resolution Center, it is not necessary to provide this information by email or through the Contact Us form, as the review team will follow up with you in the Resolution Center.<br>When the Resolution Center or Review Notes are no longer in the editable states referenced in the guide, you can continue communications with us by using the App Review Contact Us form:<br>.1. Go to <a href="https://developer.apple.com/contact/app-store/" target="_blank" rel="noopener">https://developer.apple.com/contact/app-store/</a>.<br>.2. Choose “get clarification on an app rejection” from the Topic pop-up menu.<br>If you have any questions, please feel free to reply to this message.</p>
+</blockquote>
+<p>让我知道了我之前是多么的傻，每一次都提交审核，这样导致每一次都在重新开始，重新排队等待；</p>
+<p>下面是总结的2个方法：</p>
+<blockquote>
+<ol>
+<li>本地搭建NAT64测试没有问题，且服务器不支持ipv6的情况下，如果审核被拒了，可以尝试将销售范围改为国内；<br>苹果审核在美国如果你设置的销售范围是不国内的，他们会在美国的网络环境下进行测试审核。修改之后就会切换到我们国内的网（只是个人观点）</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>2.因为ipv6被拒，但是本地测试没有这个问题的时候，就录制一个在ipv6网络环境下APP操作视频，在解决方案中心的回复功能上传视频文件，并且文字强调说明自己本地是没有问题的；切记一定不要重新提交审核，让应用的状态处在“被拒绝”状态就好，这样当天或者第二天iOS审核团队会继续根据你的回复进行审核</p>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>非公开的API最好不要用，说不定哪一天就会有问题；</li>
+</ol>
+</blockquote>
+<p>将自己遇到的问题写出来，是希望能够帮助有需要的人，表达的不是很好，只是为了解决问题而写的；</p>
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79gy1g4mux6b91cj30h800n744.jpg" alt="2318866-ff2684baa2d2b97e.png"></p>
+</div><div class="post-copyright"><blockquote><p>原文作者: Jarvis</p><p>原文链接: <a href="http://yoursite.com/2018/06/01/iOS webApp 审核被拒(包括ipv6)/">http://yoursite.com/2018/06/01/iOS webApp 审核被拒(包括ipv6)/</a></p><p>版权声明: 转载请注明出处(必须保留作者署名及链接)</p></blockquote></div><div class="tags"></div><div class="post-share"><div class="social-share"><span>分享到:</span></div></div><div class="post-nav"><a href="/2018/09/08/CoreBluetooth 蓝牙开发（后台模式、状态保存与恢复）/" class="pre">CoreBluetooth 蓝牙开发（后台模式、状态保存与恢复）</a></div><div id="comments"><div id="lv-container" data-id="city" data-uid="MTAyMC80NTA3OC8yMTU5NQ=="></div></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#不要在意写的好不好，希望能够帮到有需要的人-🙂"><span class="toc-text">不要在意写的好不好，希望能够帮到有需要的人 🙂</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法："><span class="toc-text">解决方法：</span></a></li></ol></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#2018-05-24"><span class="toc-text">2018/05/24</span></a></li></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/07/03/内联样式之三目运算符/">内联样式之三目运算符</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/03/Mac下个人博客的搭建之旅/">Mac下个人博客的搭建之旅</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/03/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/03/14/c版本的哈希与javaScript版本的哈希/">c版本的哈希与javaScript版本的哈希</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/03/06/小程序学习之--Flex布局/">小程序学习之--Flex布局</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/11/iOS 地图轨迹回放之播放、暂停、加速、减速（高德地图）/">iOS 地图轨迹回放之播放、暂停、加速、减速（高德地图）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/08/CoreBluetooth 蓝牙开发（后台模式、状态保存与恢复）/">CoreBluetooth 蓝牙开发（后台模式、状态保存与恢复）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/01/iOS webApp 审核被拒(包括ipv6)/">iOS webApp 审核被拒(包括ipv6)</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="https://www.jianshu.com/u/7c653d55efb4" title="简书" target="_blank">简书</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">网站地图</a> |  <a href="/atom.xml">订阅本站</a> |  <a href="/about/">联系博主</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次，本站总访客数:<i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>人</p><p><span> Copyright &copy;<a href="/." rel="nofollow">Jarvis.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.3"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.3" async></script><link rel="stylesheet" type="text/css" href="/share/css/share.css"><script type="text/javascript" src="/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/share/js/qrcode.js" charset="utf-8"></script><script>(function(d, s) {
+  var j, e = d.getElementsByTagName('body')[0];
+  if (typeof LivereTower === 'function') { return; }
+  j = d.createElement(s);
+  j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+  j.async = true;
+  e.appendChild(j);
+})(document, 'script');
+</script></body></html>
