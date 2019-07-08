@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="Jarvis.卢的个人博客"><meta name="keywords" content="blog, 技术博客, IT"><title>Flutter之tabBar的实现 | 望月@Jarvis</title><link rel="stylesheet" type="text/css" href="//fonts.loli.net/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.3"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.3"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Flutter之tabBar的实现</h1><a id="logo" href="/.">望月@Jarvis</a><p class="description">在时光的流逝中我把将近而立之年之前的时间都荒废了，接下来我要把荒废时间的赚回来！</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">Flutter之tabBar的实现</h1><div class="post-meta"><a href="/2019/07/08/Flutter之TabBar的实现/#comments" class="comment-count"></a><p><span class="date">Jul 08, 2019</span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><p>Flutter最基础的组件类是Widget，其它所有组件都继承Widget的，紧接着下面有两大类组件： <strong><em>有状态组件</em></strong> 及 <strong><em>无状态组件</em></strong> 。有状态组件是界面会发生变化的组件，无状态组件即界面不会发生变化的组件；</p>
+<p><img src="http://ww1.sinaimg.cn/large/006tNc79gy1g4saemujp9j30dp07swfw.jpg" alt="Widget"></p>
+<h3 id="无状态组件：StatelessWidget"><a href="#无状态组件：StatelessWidget" class="headerlink" title="无状态组件：StatelessWidget"></a>无状态组件：StatelessWidget</h3><p>无状态组件（StatelessWidget）是不可变的，这意味着它们的属性是不可以改变的，所有的值都是最终的；</p>
+<h3 id="有状态组件：StatefulWidget"><a href="#有状态组件：StatefulWidget" class="headerlink" title="有状态组件：StatefulWidget"></a>有状态组件：StatefulWidget</h3><p>有状态组件(StatefulWidget)持有的状态可能在Widget生命周期中发生变化。<br>实现一个StatefulWidget至少需要两个类：</p>
+<ul>
+<li>一个StatefulWidget类。</li>
+<li>一个是State类。</li>
+</ul>
+<p>StatefulWidget类本身是不变的，但是State类在Widget生命周期中始终存在。要想让界面发生变化，就要使用state对象，state要继承与StatefulWidget。StatefulWidget是描述外观的，而state管理最终显示的外观，数据的变化，当数据发生变化之后通过setState 重新渲染界面</p>
+<p>因为TabBar的状态是会变的，所以实现TabBar的时候选用StatefulWidget，如下代码仿微信的布局方式写的：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:wechat_demo/pages/chat_page.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:wechat_demo/pages/discover_page.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:wechat_demo/pages/friends_page.dart'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:wechat_demo/pages/mine_page.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RootPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> &#123;</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _RootPageState createState() =&gt; _RootPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_RootPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">RootPage</span>&gt; &#123;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">//界面数组</span></span><br><span class="line">  List&lt;Widget&gt; pages = [</span><br><span class="line">    ChatPage(),</span><br><span class="line">    FriendsPage(),</span><br><span class="line">    DiscoverPage(),</span><br><span class="line">    MinePage()</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> _currentIndex = <span class="number">2</span>;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Container(</span><br><span class="line"><span class="symbol">      child:</span> Scaffold(</span><br><span class="line"><span class="symbol">        bottomNavigationBar:</span> BottomNavigationBar(</span><br><span class="line"><span class="symbol">            onTap:</span> (<span class="keyword">int</span> index)&#123;</span><br><span class="line">              _currentIndex = index;</span><br><span class="line">              setState(() &#123;&#125;);</span><br><span class="line">            &#125;,</span><br><span class="line"><span class="symbol">            selectedFontSize:</span> <span class="number">12.0</span>,  <span class="comment">//设置选中的字体大小</span></span><br><span class="line"><span class="symbol">            type:</span> BottomNavigationBarType.fixed,</span><br><span class="line"><span class="symbol">            fixedColor:</span> Colors.green,</span><br><span class="line"><span class="symbol">            currentIndex:</span> _currentIndex,</span><br><span class="line"><span class="symbol">            items:</span> &lt;BottomNavigationBarItem&gt;[</span><br><span class="line">              BottomNavigationBarItem(</span><br><span class="line"><span class="symbol">                  icon:</span> Image(<span class="string">height:</span> <span class="number">20</span>,<span class="string">width:</span> <span class="number">20</span>, <span class="string">image:</span> AssetImage(<span class="string">'images/tabbar_chat.png'</span>)), <span class="comment">//未选中时的图标</span></span><br><span class="line"><span class="symbol">                  activeIcon:</span> Image(<span class="string">height:</span> <span class="number">20</span>,<span class="string">width:</span> <span class="number">20</span>, <span class="string">image:</span> AssetImage(<span class="string">'images/tabbar_chat_hl.png'</span>)),  <span class="comment">//选中时的图标</span></span><br><span class="line"><span class="symbol">                  title:</span> Text(<span class="string">'微信'</span>)</span><br><span class="line">              ),</span><br><span class="line">              BottomNavigationBarItem(</span><br><span class="line"><span class="symbol">                  icon:</span> Image(<span class="string">height:</span> <span class="number">20</span>,<span class="string">width:</span> <span class="number">20</span>, <span class="string">image:</span> AssetImage(<span class="string">'images/tabbar_friends.png'</span>)),</span><br><span class="line"><span class="symbol">                  activeIcon:</span> Image(<span class="string">height:</span> <span class="number">20</span>,<span class="string">width:</span> <span class="number">20</span>, <span class="string">image:</span> AssetImage(<span class="string">'images/tabbar_friends_hl.png'</span>)),</span><br><span class="line"><span class="symbol">                  title:</span> Text(<span class="string">'通讯录'</span>)</span><br><span class="line">              ),</span><br><span class="line">              BottomNavigationBarItem(</span><br><span class="line"><span class="symbol">                  icon:</span> Image(<span class="string">height:</span> <span class="number">20</span>,<span class="string">width:</span> <span class="number">20</span>, <span class="string">image:</span> AssetImage(<span class="string">'images/tabbar_discover.png'</span>)),</span><br><span class="line"><span class="symbol">                  activeIcon:</span> Image(<span class="string">height:</span> <span class="number">20</span>,<span class="string">width:</span> <span class="number">20</span>, <span class="string">image:</span> AssetImage(<span class="string">'images/tabbar_discover_hl.png'</span>)),</span><br><span class="line"><span class="symbol">                  title:</span> Text(<span class="string">'发现'</span>)</span><br><span class="line">              ),</span><br><span class="line">              BottomNavigationBarItem(</span><br><span class="line"><span class="symbol">                  icon:</span> Image(<span class="string">height:</span> <span class="number">20</span>,<span class="string">width:</span> <span class="number">20</span>, <span class="string">image:</span> AssetImage(<span class="string">'images/tabbar_mine.png'</span>)),</span><br><span class="line"><span class="symbol">                  activeIcon:</span> Image(<span class="string">height:</span> <span class="number">20</span>,<span class="string">width:</span> <span class="number">20</span>, <span class="string">image:</span> AssetImage(<span class="string">'images/tabbar_mine_hl.png'</span>)),</span><br><span class="line"><span class="symbol">                  title:</span> Text(<span class="string">'我'</span>)</span><br><span class="line">              )</span><br><span class="line">            ]</span><br><span class="line">        ),</span><br><span class="line"><span class="symbol">        body:</span> pages[_currentIndex],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>这里介绍几个关键的组件</strong> </p>
+<h4 id="1、Scaffold-脚手架组件"><a href="#1、Scaffold-脚手架组件" class="headerlink" title="1、Scaffold(脚手架组件)"></a>1、Scaffold(脚手架组件)</h4><p>Scaffold实现了基本的Material Design布局。只要是在Material Design中定义过的单个界面显示的布局组件元素，都可以使用Scaffold来绘制。</p>
+<p>Scaffold常见的属性如下表：</p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>APPBar</td>
+<td>AppBar</td>
+<td>显示在界面顶部的一个AppBar</td>
+</tr>
+<tr>
+<td>body</td>
+<td>Widget</td>
+<td>当前界面所显示的主要内容</td>
+</tr>
+<tr>
+<td>floatingActionButton</td>
+<td>Widget</td>
+<td>在Material Design中定义的一个功能按钮</td>
+</tr>
+<tr>
+<td>persistentFooterButtons</td>
+<td>List&lt;<em>Widget</em>&gt;</td>
+<td>固定在下方显示的按钮</td>
+</tr>
+<tr>
+<td>drawer</td>
+<td>Widget</td>
+<td>侧边栏组件</td>
+</tr>
+<tr>
+<td>bottomNavgationBar</td>
+<td>Widget</td>
+<td>显示在底部的导航栏按钮栏</td>
+</tr>
+<tr>
+<td>backgroundColor</td>
+<td>Color</td>
+<td>背景颜色</td>
+</tr>
+<tr>
+<td>resizeToAvoidBottomPadding</td>
+<td>bool</td>
+<td>控制界面内容body是否重新布局来避免底部被覆盖，比如键盘显示时</td>
+</tr>
+</tbody></table>
+<h4 id="2、BottomNavgationBar（底部导航条组件）"><a href="#2、BottomNavgationBar（底部导航条组件）" class="headerlink" title="2、BottomNavgationBar（底部导航条组件）"></a>2、BottomNavgationBar（底部导航条组件）</h4><p>BottomNavgationBar是底部导航条，类似于iOS中的TabbarController,可以很容易的再tab之间切换，大部分APP都采用这种布局方式。<br>BottomNavgationBar的常见属性如下表：</p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>currentIndex</td>
+<td>int</td>
+<td>当前索引，用来切换按钮控制</td>
+</tr>
+<tr>
+<td>fixedColor</td>
+<td>Color</td>
+<td>选中按钮的颜色。如果没有指定值，则用系统主题色</td>
+</tr>
+<tr>
+<td>iconSize</td>
+<td>double</td>
+<td>按钮图标大小</td>
+</tr>
+<tr>
+<td>items</td>
+<td>List&lt;<em>BottomNavgationBarItem</em>&gt;</td>
+<td>底部导航条按钮集，每一项是一个BottomNavgationBarItem，有icon图标及title文本属性</td>
+</tr>
+<tr>
+<td>onTap</td>
+<td>ValueChanged&lt;<em>int</em>&gt;</td>
+<td>按下其中某个按钮的回调事件。需要根据返回的索引设置当前的索引</td>
+</tr>
+</tbody></table>
+</div><div class="post-copyright"><blockquote><p>原文作者: Jarvis</p><p>原文链接: <a href="http://yoursite.com/2019/07/08/Flutter之TabBar的实现/">http://yoursite.com/2019/07/08/Flutter之TabBar的实现/</a></p><p>版权声明: 转载请注明出处(必须保留作者署名及链接)</p></blockquote></div><div class="tags"></div><div class="post-share"><div class="social-share"><span>分享到:</span></div></div><div class="post-nav"><a href="/2019/07/07/Flutter学习之布局/" class="next">Flutter学习之布局</a></div><div id="comments"><div id="lv-container" data-id="city" data-uid="MTAyMC80NTA3OC8yMTU5NQ=="></div></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#无状态组件：StatelessWidget"><span class="toc-text">无状态组件：StatelessWidget</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有状态组件：StatefulWidget"><span class="toc-text">有状态组件：StatefulWidget</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、Scaffold-脚手架组件"><span class="toc-text">1、Scaffold(脚手架组件)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、BottomNavgationBar（底部导航条组件）"><span class="toc-text">2、BottomNavgationBar（底部导航条组件）</span></a></li></ol></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/07/08/Flutter之TabBar的实现/">Flutter之tabBar的实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/07/Flutter学习之布局/">Flutter学习之布局</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/07/Https请求过程/">Https请求过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/06/Swift VS Objective-C（一）/">Swift VS Objective-C</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/03/内联样式之三目运算符/">内联样式之三目运算符</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/03/Mac下个人博客的搭建之旅/">Mac下个人博客的搭建之旅</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/03/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/03/14/c版本的哈希与javaScript版本的哈希/">c版本的哈希与javaScript版本的哈希</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/03/06/小程序学习之--Flex布局/">小程序学习之--Flex布局</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/11/iOS 地图轨迹回放之播放、暂停、加速、减速（高德地图）/">iOS 地图轨迹回放之播放、暂停、加速、减速（高德地图）</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/100000/" style="font-size: 15px;">100000</a> <a href="/tags/100001/" style="font-size: 15px;">100001</a> <a href="/tags/10002/" style="font-size: 15px;">10002</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="https://www.jianshu.com/u/7c653d55efb4" title="简书" target="_blank">简书</a><ul></ul><a href="http://www.cnblogs.com/qwer-BHS/" title="博客园" target="_blank">博客园</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">网站地图</a> |  <a href="/atom.xml">订阅本站</a> |  <a href="/about/">联系博主</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次，本站总访客数:<i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>人</p><p><span> Copyright &copy;<a href="/." rel="nofollow">Jarvis.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.3"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.3" async></script><link rel="stylesheet" type="text/css" href="/share/css/share.css"><script type="text/javascript" src="/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/share/js/qrcode.js" charset="utf-8"></script><script>(function(d, s) {
+  var j, e = d.getElementsByTagName('body')[0];
+  if (typeof LivereTower === 'function') { return; }
+  j = d.createElement(s);
+  j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+  j.async = true;
+  e.appendChild(j);
+})(document, 'script');
+</script></body></html>
